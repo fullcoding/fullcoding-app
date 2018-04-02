@@ -5,6 +5,9 @@ const http = require('http');
 const builder = require('botbuilder');
 const config = require('./config');
 
+//myefrei API
+const myefrei = require('./myefrei');
+
 //Create app
 const app = express();
 
@@ -28,15 +31,29 @@ var recognizer = new builder.LuisRecognizer(config.luisModelUrl);
 var dialog = new builder.IntentDialog({ recognizers: [recognizer] });
 bot.dialog('/', dialog);
 
-dialog.matches('getGrades', [
+dialog.matches('getGrades',
     function (session) {
-        builder.Prompts.text(session, 'De quelle ville voulez-vous connaître la météo ?');
-    },
-    function (session, results) {        
-        var message= 'lol';
-        session.send(message);
+        myefrei.getGrades( function (result) {
+            console.log(result);
+            result.forEach(item => {
+                builder.Prompts.text(session, item);
+            });
+            session.endDialog();
+        });
     }
-]);
+);
+
+dialog.matches('getPlanningDay',
+    function (session) {
+        myefrei.getPlanningDay( '2018-04-03',function (result) {
+            console.log(result);
+            result.forEach(item => {
+                builder.Prompts.text(session, item);
+            });
+            session.endDialog();
+        });
+    }
+);
 
 dialog.onDefault(function (session) {
     session.send('Je n\'ai pas compris votre demande, il faut écrire "donne-moi la météo" !');

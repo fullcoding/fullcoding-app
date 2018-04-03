@@ -2,7 +2,7 @@ axios = require('axios')
 
 var getGrade = () => {
     axios.get('https://www.myefrei.fr/api/extranet/student/queries/student-courses-semester?semester=S6&year=2017-2018',
-    {headers: {'Cookie': '_ga=GA1.2.1752916455.1522520189; _gid=GA1.2.405024129.1522520189; SESSION=4090e30f-47ee-4131-9003-0b4865513b14; XSRF-TOKEN=9e22ccbf-48cc-417a-ba5d-4e815b360b6a'
+    {headers: {'Cookie': '_ga=GA1.2.1452027106.1516909406; _gid=GA1.2.1665466258.1522742761; _gat=1; SESSION=fee26d6d-e1b2-4c36-be86-d10de1772e0d; XSRF-TOKEN=8e82dd81-3d6a-442d-b8d1-daa4d1136f3f'
     }})
   .then(function(response){
     console.log(response.data);

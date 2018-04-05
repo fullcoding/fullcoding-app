@@ -5,6 +5,9 @@ const http = require('http');
 const builder = require('botbuilder');
 const config = require('./config');
 
+//myefrei API
+const myefrei = require('./myefrei');
+
 //Create app
 const app = express();
 
@@ -26,22 +29,56 @@ var bot = new builder.UniversalBot(connector);
 
 var recognizer = new builder.LuisRecognizer(config.luisModelUrl);
 var dialog = new builder.IntentDialog({ recognizers: [recognizer] });
-bot.dialog('/', dialog);
 
-dialog.matches('getGrades', [
+dialog.matches('getAbsences',
     function (session) {
-        builder.Prompts.text(session, 'De quelle ville voulez-vous connaître la météo ?');
-    },
-    function (session, results) {        
-        var message= 'lol';
-        session.send(message);
+        myefrei.getAbsences( function (result, excusedAbsences) {
+            console.log(result.length);
+            session.send("Vous avez "+result.length+" absences, dont "+excusedAbsences+" excusées");
+        });
+        session.endDialog();
     }
-]);
+);
+
+dialog.matches('getGrades',
+    function (session) {
+        myefrei.getGrades( function (result) {
+            console.log(result);
+            result.forEach(item => {
+                session.send(item);
+            });
+        });
+        session.endDialog();
+    }
+);
+
+dialog.matches('getPlanningDay',
+    function (session, args) {
+        var d = new Date().toISOString().split('T')[0];
+        var day = builder.EntityRecognizer.findEntity(args.entities, 'Jour');
+        if(day) {
+            if(day.entity.toLowerCase() == 'demain') {
+                var tomorrow = new Date().getDay()+2;
+                tomorrow = (tomorrow<10 ? '0'+tomorrow : tomorrow);
+                d = d.slice(0,8)+tomorrow;
+            }
+        }
+        
+        myefrei.getPlanningDay( d,function (result) {
+            console.log(result);
+            result.forEach(item => {
+                session.send(item);
+            });
+        });
+        session.endDialog();
+    }
+);
 
 dialog.onDefault(function (session) {
-    session.send('Je n\'ai pas compris votre demande, il faut écrire "donne-moi la météo" !');
+    session.send('Je n\'ai pas compris votre demande. Pouvez-vous reformuler s\'il vous plait?');
 });
 
+bot.dialog('/', dialog);
 
 //Route for chat
 app.use('/api/v1/messages', connector.listen());

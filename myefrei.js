@@ -1,13 +1,68 @@
 axios = require('axios')
+config = require('./config')
 
-var getGrade = () => {
+var exports = module.exports = {};
+
+exports.getGrades = (callback) => {
     axios.get('https://www.myefrei.fr/api/extranet/student/queries/student-courses-semester?semester=S6&year=2017-2018',
-    {headers: {'Cookie': '_ga=GA1.2.1452027106.1516909406; _gid=GA1.2.1665466258.1522742761; _gat=1; SESSION=fee26d6d-e1b2-4c36-be86-d10de1772e0d; XSRF-TOKEN=8e82dd81-3d6a-442d-b8d1-daa4d1136f3f'
-    }})
+    {headers: {'Cookie': config.cookie}}
+    )
   .then(function(response){
-    console.log(response.data);
-  });  
+    var result = [];
+    var newMark;
+    response.data.rows.forEach(row => {
+      if(row.custMarkCode!="") {
+        newMark = row.custExamination+" de "+row.soffOfferingDesc+" : "+row.custMarkCode;
+        if(result.indexOf(newMark)<0)
+          result.push(newMark);
+        } 
+    });
+    callback(result);
+    })
 }
 
+exports.getAbsences = (callback) => {
+  axios.get('https://www.myefrei.fr/api/extranet/student/queries/student-absences?yearId=2017',
+  {headers: {'Cookie': config.cookie}}
+  )
+.then(function(response){
+  var result = [];
+  var excusedAbsences = 0;
+  response.data.rows.forEach(row => {
+      result.push(row)
+      if(row.stdAbsExcused=="Oui"){
+        excusedAbsences++;
+      }
+  });
+  callback(result, excusedAbsences);
+  })
+}
 
-getGrade();
+exports.getPlanningDay = (day,callback) => {
+  axios.get('https://www.myefrei.fr/api/extranet/student/queries/planning?enddate=2018-05-07&startdate=2018-03-26',
+  {headers: {'Cookie': config.cookie}}
+  )
+.then(function(response){
+  var result = [];
+  response.data.rows.forEach(row => {
+    if(row.srvTimeCrDateFrom.includes(day)){
+      var room = row.srvTimeCrDelRoom.split(",");
+      room = 'Bat ' + room[1] + ", " + room[2];
+      var timeFrom = row.timeCrTimeFrom.slice(0,2)+"h"+row.timeCrTimeFrom.slice(2,4);
+      var timeTo = row.timeCrTimeTo.slice(0,2)+"h"+row.timeCrTimeTo.slice(2,4);
+      result.push(row.soffDeliveryMode+" en "+row.prgoOfferingDesc+" de "+timeFrom+" à "+timeTo+" en "+room); 
+    }
+  });
+  callback(result);
+  })
+}
+
+exports.test = () => {
+  var d = new Date().toISOString().split('T')[0];
+  exports.getPlanningDay( d, function (result) {
+    result.forEach(item => {
+        console.log(item);
+    })
+});
+}
+

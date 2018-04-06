@@ -61,14 +61,20 @@ dialog.matches('getPlanningDay',
                 var tomorrow = new Date().getDay()+2;
                 tomorrow = (tomorrow<10 ? '0'+tomorrow : tomorrow);
                 d = d.slice(0,8)+tomorrow;
+                console.log(d);
             }
         }
         
         myefrei.getPlanningDay( d,function (result) {
             console.log(result);
-            result.forEach(item => {
-                session.send(item);
-            });
+            if(result.length>0) {
+                result.forEach(item => {
+                    session.send(item);
+                });
+            }
+            else {
+                session.send("Vous n'avez pas cours demain ! Lourd");
+            }
         });
         session.endDialog();
     }

@@ -93,6 +93,16 @@ dialog.onDefault(function (session) {
     session.send('Je n\'ai pas compris votre demande. Pouvez-vous reformuler s\'il vous plait?');
 });
 
+
+bot.dialog('askName', [
+    function (session) {
+        builder.Prompts.text(session, 'Hi! What is your name?');
+    },
+    function (session, results) {
+        session.endDialogWithResult(results);
+    }
+]);
+
 bot.dialog('/', dialog);
 
 //Route for chat

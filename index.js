@@ -12,7 +12,7 @@ const myefrei = require('./myefrei');
 const app = express();
 
 //Define port to use
-const port = 8000 || process.env.PORT;
+const port = process.env.PORT || 8000;
 
 //Setup server
 http.createServer(app).listen(port, () => (

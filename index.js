@@ -82,7 +82,11 @@ dialog.matches('getPlanningDay',
                 });
             }
             else {
-                session.send("Vous n'avez pas cours demain ! Lourd");
+                if(day){
+                    if(day.entity.toLowerCase() == 'semaine') session.send("Vous n'avez pas cours cette semaine !");
+                    if(day.entity.toLowerCase() == 'demain')  session.send("Vous n'avez pas cours demain !");
+                }
+                else session.send("Vous n'avez pas cours aujourd'hui !");
             }
         });
         session.endDialog();

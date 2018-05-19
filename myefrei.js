@@ -59,19 +59,21 @@ exports.getPlanningDay = (d1, d2, callback) => {
 .then(function(response){
   console.log(response.data);
   var result = [];
-  response.data.rows.forEach(row => {
-      var room = row.srvTimeCrDelRoom.split(",");
-      room = 'Bat ' + room[1] + ", " + room[2];
-      if(row.timeCrTimeFrom.length<4)
-        var timeFrom = row.timeCrTimeFrom.slice(0,1)+"h"+row.timeCrTimeFrom.slice(1,3);
-      else
-        var timeFrom = row.timeCrTimeFrom.slice(0,2)+"h"+row.timeCrTimeFrom.slice(2,4);
-      if(row.timeCrTimeTo.length<4)
-        var timeTo = row.timeCrTimeTo.slice(0,1)+"h"+row.timeCrTimeTo.slice(1,3);
-      else
-        var timeTo = row.timeCrTimeTo.slice(0,2)+"h"+row.timeCrTimeTo.slice(2,4);
-      result.push(row.soffDeliveryMode+" en "+row.prgoOfferingDesc+" de "+timeFrom+" à "+timeTo+" en "+room); 
-  });
+  if(response.data.length > 0) {
+    response.data.rows.forEach(row => {
+        var room = row.srvTimeCrDelRoom.split(",");
+        room = 'Bat ' + room[1] + ", " + room[2];
+        if(row.timeCrTimeFrom.length<4)
+          var timeFrom = row.timeCrTimeFrom.slice(0,1)+"h"+row.timeCrTimeFrom.slice(1,3);
+        else
+          var timeFrom = row.timeCrTimeFrom.slice(0,2)+"h"+row.timeCrTimeFrom.slice(2,4);
+        if(row.timeCrTimeTo.length<4)
+          var timeTo = row.timeCrTimeTo.slice(0,1)+"h"+row.timeCrTimeTo.slice(1,3);
+        else
+          var timeTo = row.timeCrTimeTo.slice(0,2)+"h"+row.timeCrTimeTo.slice(2,4);
+        result.push(row.soffDeliveryMode+" en "+row.prgoOfferingDesc+" de "+timeFrom+" à "+timeTo+" en "+room); 
+    });
+  }
   callback(result);
   })
 }

@@ -1,0 +1,30 @@
+
+.background {
+    background-image: url("assets/background.png");
+    height: 100%;
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+body, html {
+    height: 100%;
+    background-color: #93CBED;
+    font-family: 'Open Sans';
+    font-size: 18px;
+}
+
+.row {
+    height: 100%;
+}
+
+.row>div {
+    height: 100%;
+}
+
+.description {
+    margin-top: 10%;
+    width: 60%;
+    color: #FFFFFF;
+}
+

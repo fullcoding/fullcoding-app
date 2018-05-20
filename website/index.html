@@ -1,0 +1,49 @@
+
+    <!DOCTYPE html>
+    <head>
+        <title>G.R.E.G</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
+        <link rel="stylesheet" href="./custom-bot/BotFramework-WebChat/botchat.css" />
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div class="container-fluid background">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="description">
+                        <p>G.R.E.G est votre assistant personnel disponible 24h/24 et 7j/7.</p>
+                        <p>Il trouvera toutes les informations liées à vos études:
+                        demandez lui vos notes, vos absences et même votre emplois du temps.</p>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                        <div id="bot" class="wc-narrow"></div>
+                </div>
+            </div>
+               
+    
+        </div>
+
+        
+        <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tilt.js/1.2.1/tilt.jquery.min.js"></script> <!-- Load Tilt.js library -->
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="https://cdn.botframework.com/botframework-webchat/latest/botchat.js"></script>
+        
+        <script>
+        BotChat.App({
+            directLine: { secret: 'DoN22jqjO5Y.cwA.pGU.RAGoNEXZSWXGHbFjnQaewJch-C16WKPjQ0yRn53C8Wk' },
+            user: { id: '1' },
+            bot: { id: 'GREGchatbot' },
+            resize: 'detect'
+        }, document.getElementById("bot"));
+        </script>
+    </body>
+
+    <!-- iframe src='https://webchat.botframework.com/embed/GREGchatbot?s=fysAv15zmZ0.cwA.UyU.A58cE05_kruLVbiDmpZCRANbSJDzFzo6dEgP5uY7PI4'></iframe>-->
